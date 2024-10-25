@@ -6,12 +6,11 @@ const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 
-//Middleware
+// Middleware
 app.use(express.json());
 app.use(morgan("dev"));
 
 // Connect to MongoDB
-
 connectDB();
 
 // Routes
