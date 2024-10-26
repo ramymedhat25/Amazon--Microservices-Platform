@@ -6,9 +6,15 @@ const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 
+process.env.JWT_EXPIRATION = process.env.JWT_EXPIRATION || '1h';
+
 // Middleware
 app.use(express.json());
 app.use(morgan("dev"));
+app.use((err, req, res, next) => {
+  console.error("Unhandled error:", err);
+  res.status(500).json({ message: "Internal server error", error: err.message });
+});
 
 // Connect to MongoDB
 connectDB();
