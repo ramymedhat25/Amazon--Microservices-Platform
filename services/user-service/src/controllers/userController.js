@@ -3,35 +3,35 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { sendResponse } = require("../utils/helpers");
 
+exports.getUsers = async (req, res) => {
+  try {
+    const users = await User.find({});
+    res.status(200).json({ message: "Users fetched successfully", users });
+  } catch (error) {
+    res.status(500).json({ error: "Error retrieving users", details: error.message });
+  }
+}
 exports.register = async (req, res) => {
-try {
-    const { name, email, password } = req.body;
+  try {
+    const { name, email, password, role = "user" } = req.body;
 
-    // Check if the user already exists
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return sendResponse(res, 400, "Email already exists");
+    // Only allow admin to assign roles other than "user"
+    if (role !== "user" && req.userRole !== "admin") {
+      return res.status(403).json({ error: "Only admins can assign roles" });
     }
 
-    // Hash the password and create the user
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ error: "Email already exists" });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ name, email, password: hashedPassword });
+    const user = new User({ name, email, password: hashedPassword, role });
     await user.save();
 
-    // Prepare user data for response
-    const userData = {
-      id: user._id,
-      name: user.name,
-      email: user.email,
-    };
-
-    console.log("User Data:", userData); // Debugging line to verify userData
-
-    // Send the response with user data
-    sendResponse(res, 201, "User registered successfully", userData);
+    res.status(201).json({ message: "User registered successfully", user });
   } catch (error) {
-    console.error("Error:", error); // Log any errors
-    sendResponse(res, 500, "Error registering user", { error: error.message });
+    res.status(500).json({ error: "Error registering user", details: error.message });
   }
 };
 
@@ -39,17 +39,17 @@ exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    if (!user) return sendResponse(res, 404, "User not found");
+    if (!user) return res.status(404).json({ error: "User not found" });
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return sendResponse(res, 400, "Invalid credentials");
+    if (!isMatch) return res.status(400).json({ error: "Invalid credentials" });
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRATION,
     });
 
-    sendResponse(res, 200, "Login successful", { token });
+    res.status(200).json({ message: "Login successful", token });
   } catch (error) {
-    sendResponse(res, 500, "Error logging in", { error: error.message });
+    res.status(500).json({ error: "Error logging in", details: error.message });
   }
 };
