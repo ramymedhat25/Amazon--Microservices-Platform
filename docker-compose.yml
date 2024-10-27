@@ -1,13 +1,15 @@
 version: '3.8'
+
 services:
   user-service:
-    build:
-      context: ./services/user-service
+    build: ./services/user-service
     ports:
-      - '8000:8000'
-    environment:
-      - MONGO_URI=mongodb://host.docker.internal:27017/amazon_userDB
-      - JWT_SECRET=27dc52b38d6a2a2162d813713226324003679ee007d5a2cf7f082386b74eb391
-      - JWT_EXPIRATION=1h
-    volumes:
-      - ./user-service:/usr/src/app
+      - "8000:8000" 
+    env_file:
+      - ./services/user-service/.env
+    networks:
+      - ecommerce-network
+
+networks:
+  ecommerce-network:
+    driver: bridge
