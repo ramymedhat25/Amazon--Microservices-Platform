@@ -1,10 +1,10 @@
-# Use the official Node.js image
+# Use Node.js 16 as the base image
 FROM node:16
 
-# Set the working directory inside the container
-WORKDIR /usr/src/app
+# Create and set the working directory
+WORKDIR /app
 
-# Copy only package.json and package-lock.json for caching
+# Copy package.json and package-lock.json
 COPY package*.json ./
 
 # Install dependencies
@@ -13,8 +13,8 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
-# Expose port 8001 for the Product Service
+# Expose the service port
 EXPOSE 8001
 
-# Start the service
-CMD ["npm", "start"]
+# Start the application
+CMD ["npm", "run", "dev"]

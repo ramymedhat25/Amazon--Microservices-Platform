@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
-    console.log("MongoDB connected for Product Service");
+    console.log("MongoDB connected to Product Database");
   } catch (error) {
-    console.error("MongoDB connection failed for Product Service:", error.message);
+    console.error("MongoDB connection failed:", error.message);
     process.exit(1);
   }
 };
