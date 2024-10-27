@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3.8"
 
 services:
   user-service:
@@ -25,6 +25,15 @@ services:
       - "8002:8002"
     env_file:
       - ./services/order-service/.env
+    networks:
+      - ecommerce-network
+
+  inventory-service:
+    build: ./services/inventory-service
+    ports:
+      - "8003:8003"
+    env_file:
+      - ./services/inventory-service/.env
     networks:
       - ecommerce-network
 

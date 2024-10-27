@@ -3,6 +3,7 @@ const {
   createOrder,
   getOrdersByUser,
   updateOrderStatus,
+  getOrderDetails,
 } = require("../controllers/orderController");
 const authMiddleware = require("../middlewares/authMiddleware");
 const roleMiddleware = require("../middlewares/roleMiddleware");
@@ -18,5 +19,6 @@ router.put(
   roleMiddleware(["admin"]),
   updateOrderStatus
 );
+router.get("/:id", authMiddleware, getOrderDetails);
 
 module.exports = router;
