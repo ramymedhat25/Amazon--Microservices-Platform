@@ -1,11 +1,12 @@
 const Order = require("../models/Order");
+const axios = require("axios");
 
 // Create a new order
 exports.createOrder = async (req, res) => {
   try {
     const { items, totalAmount } = req.body;
     const order = new Order({
-      userId: req.userId, 
+      userId: req.userId,
       items,
       totalAmount,
     });
@@ -48,4 +49,29 @@ exports.updateOrderStatus = async (req, res) => {
       .status(500)
       .json({ error: "Error updating order", details: error.message });
   }
+};
+
+// Get order details (admin only)
+
+exports.getOrderDetails = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+    if (!order) return res.status(404).json({ error: "Order not found" });
+    res.status(200).json(order);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Error fetching order details", details: error.message });
+  }
+};
+
+const checkStock = async (productId, quantity) => {
+  const response = await axios.post(
+    "http://localhost:8003/api/inventory/check",
+    {
+      productId,
+      quantity,
+    }
+  );
+  return response.data;
 };
