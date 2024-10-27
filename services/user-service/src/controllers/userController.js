@@ -16,9 +16,9 @@ exports.register = async (req, res) => {
     const { name, email, password, role = "user" } = req.body;
 
     // Only allow admin to assign roles other than "user"
-    if (role !== "user" && req.userRole !== "admin") {
-      return res.status(403).json({ error: "Only admins can assign roles" });
-    }
+    // if (role !== "user" && req.userRole !== "admin") {
+    //   return res.status(403).json({ error: "Only admins can assign roles" });
+    // }
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
