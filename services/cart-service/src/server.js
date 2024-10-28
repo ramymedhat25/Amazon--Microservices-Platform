@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const connectDB = require("./config/dbConfig.js");
 const cartRoutes = require("./routes/cartRoutes");
+const morgan = require("morgan");
 
 const app = express();
 app.use(express.json());
