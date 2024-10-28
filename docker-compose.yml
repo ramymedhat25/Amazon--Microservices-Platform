@@ -25,8 +25,11 @@ services:
       - "8002:8002"
     env_file:
       - ./services/order-service/.env
+    depends_on:
+      - inventory-service
     networks:
       - ecommerce-network
+
 
   inventory-service:
     build: ./services/inventory-service
@@ -43,6 +46,14 @@ services:
       - "8004:8004"
     env_file:
       - ./services/notification-service/.env
+    networks:
+      - ecommerce-network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"       # AMQP protocol port
+      - "15672:15672"     # RabbitMQ Management UI
     networks:
       - ecommerce-network
 
