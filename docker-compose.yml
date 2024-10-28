@@ -48,6 +48,15 @@ services:
       - ./services/notification-service/.env
     networks:
       - ecommerce-network
+      
+  cart-service:
+    build: ./services/cart-service
+    ports:
+      - "8005:8005"
+    env_file:
+      - ./services/cart-service/.env
+    networks:
+      - ecommerce-network
 
   rabbitmq:
     image: rabbitmq:3-management
