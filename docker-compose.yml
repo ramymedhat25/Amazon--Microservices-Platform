@@ -37,6 +37,15 @@ services:
     networks:
       - ecommerce-network
 
+  notification-service:
+    build: ./services/notification-service
+    ports:
+      - "8004:8004"
+    env_file:
+      - ./services/notification-service/.env
+    networks:
+      - ecommerce-network
+
 networks:
   ecommerce-network:
     driver: bridge
