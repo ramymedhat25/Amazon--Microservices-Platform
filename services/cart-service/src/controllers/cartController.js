@@ -3,12 +3,20 @@ const Cart = require("../models/Cart");
 // Get cart for a user
 exports.getCart = async (req, res) => {
   try {
-    const cart = await Cart.findOne({ userId: req.userId }).populate(
+    let cart = await Cart.findOne({ userId: req.userId }).populate(
       "items.productId"
     );
-    res.status(200).json(cart || { userId: req.userId, items: [] });
+
+    if (!cart) {
+      cart = { userId: req.userId, items: [] }; // Return an empty cart if none exists
+    }
+
+    res.status(200).json(cart);
   } catch (error) {
-    res.status(500).json({ error: "Failed to retrieve cart" });
+    console.error("Error fetching cart:", error); // More detailed error logging
+    res
+      .status(500)
+      .json({ error: "Failed to retrieve cart", details: error.message });
   }
 };
 
