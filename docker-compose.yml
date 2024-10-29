@@ -57,7 +57,15 @@ services:
       - ./services/cart-service/.env
     networks:
       - ecommerce-network
-
+  payment-service:
+    build: ./services/payment-service
+    ports:
+      - "8006:8006"
+    env_file:
+      - ./services/payment-service/.env
+    networks:
+      - ecommerce-network
+      
   rabbitmq:
     image: rabbitmq:3-management
     ports:
