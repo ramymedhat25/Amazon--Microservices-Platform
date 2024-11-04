@@ -65,7 +65,15 @@ services:
       - ./services/payment-service/.env
     networks:
       - ecommerce-network
-      
+  review-service:
+    build: ./services/review-service
+    ports:
+        - "8008:8008"
+    env_file:
+      - ./services/review-service/.env
+    networks:
+      - ecommerce-network
+
   rabbitmq:
     image: rabbitmq:3-management
     ports:
