@@ -68,7 +68,7 @@ services:
   review-service:
     build: ./services/review-service
     ports:
-        - "8008:8008"
+        - "8007:8007"
     env_file:
       - ./services/review-service/.env
     networks:
