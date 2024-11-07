@@ -14,7 +14,7 @@ connectDB();
 app.use("/api/reviews", reviewRoutes);
 
 // Start server
-const PORT = process.env.PORT || 8008;
+const PORT = process.env.PORT || 8007;
 app.listen(PORT, () => {
   logger.info(`Review Service running on port ${PORT}`);
 });
