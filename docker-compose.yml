@@ -1,6 +1,13 @@
 version: "3.8"
 
 services:
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "8080:8080"
+    networks:
+      - ecommerce-network
+
   user-service:
     build: ./services/user-service
     ports:
@@ -72,6 +79,15 @@ services:
       - "8007:8007"
     env_file:
       - ./services/review-service/.env
+    networks:
+      - ecommerce-network
+
+  recommendation-service:
+    build: ./services/recommendation-service
+    ports:
+      - "8008:8008"
+    env_file:
+      - ./services/recommendation-service/.env
     networks:
       - ecommerce-network
 
