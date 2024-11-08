@@ -1,4 +1,4 @@
-# Amazon-like E-commerce Backend
+# Amazon-Microservices-Backend
 
 This project is a backend implementation of an e-commerce platform similar to Amazon, designed using microservices architecture. It consists of 15 microservices, each responsible for a specific aspect of the platform. This approach allows for scalable and maintainable code, enabling independent development and deployment of services.
 
