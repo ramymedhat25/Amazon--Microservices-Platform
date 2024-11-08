@@ -1,6 +1,13 @@
 version: "3.8"
 
 services:
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "8080:8080"
+    networks:
+      - ecommerce-network
+
   user-service:
     build: ./services/user-service
     ports:
